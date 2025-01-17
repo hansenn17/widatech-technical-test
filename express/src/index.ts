@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 
+import invoiceRouter from "./routes/invoice.routes";
 import { sequelize } from "./config/database.config";
 import { InvoiceSchema } from "./models/invoice.model";
 import { ProductSchema } from "./models/product.model";
@@ -11,6 +12,8 @@ const app: Express = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/invoice", invoiceRouter);
 
 const port: string = process.env.PORT ?? "3000";
 app.listen(port, () => {
