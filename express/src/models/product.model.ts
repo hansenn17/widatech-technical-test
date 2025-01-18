@@ -13,12 +13,14 @@ export const ProductSchema = async (sequelize: Sequelize) => {
   Product.init(
     {
       id: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-      },
-      invoice_number: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      invoiceNumber: {
+        type: DataTypes.STRING(255),
         field: "invoice_number",
+        onDelete: "CASCADE",
         references: {
           model: "invoices",
           key: "invoice_number",
@@ -54,5 +56,6 @@ export const ProductSchema = async (sequelize: Sequelize) => {
   Product.belongsTo(Invoice, {
     foreignKey: "invoice_number",
     as: "invoices",
+    onDelete: "CASCADE",
   });
 };

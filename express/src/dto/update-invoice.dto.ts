@@ -8,5 +8,12 @@ export const updateInvoiceDto = yup.object<UpdateInvoicePayload>({
   customerName: yup.string().required().min(2),
   salesPersonName: yup.string().required().min(2),
   paymentType: yup.mixed<PaymentType>().oneOf(Object.values(PaymentType)),
-  notes: yup.string(),
+  notes: yup
+    .string()
+    .test("minLength", "must be at least 5 characters", function (value) {
+      if (value === undefined || value === "") {
+        return true;
+      }
+      return value.length >= 5;
+    }),
 });
