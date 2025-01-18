@@ -1,7 +1,7 @@
 import express, { Router, Request, Response } from "express";
+
 import { InvoiceController } from "../controller/invoice.controller";
-import { InvoiceSchema } from "../models/invoice.model";
-import { sequelize } from "../config/database.config";
+import multerConfig from "../config/multer.config";
 
 const router: Router = express.Router();
 const invoiceController = new InvoiceController();
@@ -14,12 +14,20 @@ router.get("/", async (req: Request, res: Response) => {
   await invoiceController.getInvoices(req, res);
 });
 
-router.put("/", async (req: Request, res: Response) => {
+router.put("/:invoiceNumber", async (req: Request, res: Response) => {
   await invoiceController.updateInvoice(req, res);
 });
 
-router.delete("/", async (req: Request, res: Response) => {
+router.delete("/:invoiceNumber", async (req: Request, res: Response) => {
   await invoiceController.deleteInvoice(req, res);
 });
+
+router.post(
+  "/upload",
+  multerConfig.single("file"),
+  async (req: Request, res: Response) => {
+    await invoiceController.uploadInvoice(req, res);
+  }
+);
 
 export default router;

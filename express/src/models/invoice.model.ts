@@ -9,20 +9,19 @@ export default class Invoice extends Model {
   public salesPersonName!: string;
   public paymentType!: PaymentType;
   public notes?: string;
-  public listOfProductsSold?: Array<Product>;
+  public listOfProductsSold!: Array<Product>;
 }
 
 export const InvoiceSchema = async (sequelize: Sequelize) => {
   Invoice.init(
     {
       invoiceNumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(255),
         primaryKey: true,
         field: "invoice_number",
-        autoIncrement: true,
       },
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       customerName: {
@@ -51,5 +50,9 @@ export const InvoiceSchema = async (sequelize: Sequelize) => {
       timestamps: false,
     }
   );
+  // Invoice.hasMany(Product, {
+  //   foreignKey: "invoice_number",
+  //   as: "product",
+  // });
   await Invoice.sync();
 };
